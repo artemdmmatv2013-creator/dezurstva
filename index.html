@@ -185,7 +185,9 @@
   var PERIOD_END = "2027-05-31";
 
   var state = { className: "", cells: {}, version: 1 };
-  var CFG = { url: "", key: "" };
+  var CFG_DEFAULT_URL = "https://fvpnmgpwwqmvknsolvqz.supabase.co";
+  var CFG_DEFAULT_KEY = "sb_publishable_ku0G2OdVi8ZwLOGkigj18g_dsgee0JX";
+  var CFG = { url: CFG_DEFAULT_URL, key: CFG_DEFAULT_KEY };
 
   var BASE_PAIRS = [
     "Фурсова Варвара, Коморова Виктория",
@@ -234,8 +236,9 @@
     } catch (e) {}
     try {
       var c = JSON.parse(localStorage.getItem(CFG_KEY) || "{}");
-      if (c && typeof c.url === "string") CFG.url = c.url;
-      if (c && typeof c.key === "string") CFG.key = c.key;
+      // сохраняем введённые пользователем значения, но пустые не трогаем (чтобы не затирать встроенные по умолчанию)
+      if (c && typeof c.url === "string" && c.url) CFG.url = c.url;
+      if (c && typeof c.key === "string" && c.key) CFG.key = c.key;
     } catch (e) {}
     // если нет данных или другая структура — пересоздаём
     if (!state.cells || Object.keys(state.cells).length === 0) state = buildState();
